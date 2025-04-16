@@ -38,11 +38,20 @@ evaluator.draw_bgfp_auto(path_img='경로/images')
 ## 평가 기준 예시
 
 - 기존 YOLO `test.py`의 출력과 비교한 정량 지표 차이(좌측: Ours | 우측:YOLOv7 Repo.)  
-![alt text](readme_images/Background_FP_curve.png)  
+
+coufusion matrix  
 ![alt text](readme_images/cm.png)  
+
+p 커브  
 ![alt text](readme_images/p_curve.png)  
+
+r 커브  
 ![alt text](readme_images/r_curve.png)  
+
+f1 커브  
 ![alt text](readme_images/f1_curve.png)  
+
+pr 커브  
 ![alt text](readme_images/pr_curve.png)  
 ---
 
