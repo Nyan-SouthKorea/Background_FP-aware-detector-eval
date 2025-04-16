@@ -9,12 +9,13 @@
 
 ## 주요 기능
 
-- **mAP@0.5, mAP@0.5:0.95** 자동 계산
+- **mAP@0.5, mAP@0.5:0.95** 자동 계산에서 best f1-score가 도출되는 conf. thresh.를 함께 제공
+![alt text](readme_images/mAP_result.png)  
 - 클래스별 **Precision, Recall, F1-Score** 및 **Background FP** 곡선 시각화
 - **Confusion Matrix** 시각화 및 저장
 - **best F1-score 기준 Conf. Thresh** 자동 탐색
 - Background False Positive 시각화 기능 (draw_bgfp_auto)
-![alt text](readme_images/Background_FP_curve.png)
+![alt text](readme_images/Background_FP_curve.png)  
 ---
 
 ## 사용 방법
@@ -33,11 +34,17 @@ evaluator.evaluate()
 evaluator.draw_bgfp_auto(path_img='경로/images')
 ```
 
+## 실행 결과 예시  
+![alt text](readme_images/run_example_1.png)  
+
 ---
 
 ## 평가 기준 예시
 
 - 기존 YOLO `test.py`의 출력과 비교한 정량 지표 차이(좌측: Ours | 우측:YOLOv7 Repo.)  
+
+mAP 결과표  
+![alt text](readme_images/mAP_result.png)  
 
 coufusion matrix  
 ![alt text](readme_images/cm.png)  
@@ -85,7 +92,7 @@ pr 커브
 
 ## 환경 및 의존성
 
-- Python >= 3.8
+- Python >= 3.10
 - 필수 패키지:
   - numpy
   - pandas
