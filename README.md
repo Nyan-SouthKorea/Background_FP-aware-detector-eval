@@ -44,7 +44,7 @@ evaluator.draw_bgfp_auto(path_img='경로/images')
 - 기존 YOLO `test.py`의 출력과 비교한 정량 지표 차이(좌측: Ours | 우측:YOLOv7 Repo.)  
 
 mAP 결과표  
-![alt text](readme_images/mAP_result.png)  
+![alt text](readme_images/mAP_compare.png)  
 
 coufusion matrix  
 ![alt text](readme_images/cm.png)  
