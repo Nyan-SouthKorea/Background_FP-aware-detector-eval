@@ -14,7 +14,10 @@
 - 클래스별 **Precision, Recall, F1-Score** 및 **Background FP** 곡선 시각화
 - **Confusion Matrix** 시각화 및 저장
 - **best F1-score 기준 Conf. Thresh** 자동 탐색
-- Background False Positive 시각화 기능 (draw_bgfp_auto)
+- Background False Positive 시각화 기능 (draw_bgfp_auto)  
+![alt text](readme_images/bg_fp_ex1.png)  
+  
+- Background False Positive curve를 통해 로봇의 갇힘 현상 없는 최적의 conf. thresh. 도출 가능 
 ![alt text](readme_images/Background_FP_curve.png)  
 ---
 
