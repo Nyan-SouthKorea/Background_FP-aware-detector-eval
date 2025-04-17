@@ -82,6 +82,8 @@ def read_label(label_path):
             class_info, b1, b2, b3, b4, conf = txt.split(' ')
             b1, b2, b3, b4, conf = float(b1), float(b2), float(b3), float(b4), float(conf)
             bbox_list.append([class_info, b1, b2, b3, b4, conf])
+        elif len(splited_txt) == 1:
+            pass
         else:
             print(f'bbox 인자 개수 이상:{len(splited_txt)}')
     return bbox_list

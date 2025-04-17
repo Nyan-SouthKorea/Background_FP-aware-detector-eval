@@ -349,7 +349,7 @@ class Eval_Object_Detector:
                 height = min(precision_list[i], precision_list[i+1])
                 ap += (width * height)
                 # (위 삼각형)
-                # ap += ((width * (max(precision_list[i], precision_list[i+1])-height)) / 2)
+                ap += ((width * (max(precision_list[i], precision_list[i+1])-height)) / 2)
             aps[class_name] = ap
         return aps
 
@@ -544,19 +544,39 @@ class Eval_Object_Detector:
             recall = recall_dic[cls]
             plt.plot(recall, precision, label=cls)
 
-        # 평균 PR 곡선 계산
-        num_points = len(next(iter(precision_dic.values())))  # 모든 클래스가 동일 길이 가정
-        mean_precision = []
-        mean_recall = []
+        # # 평균 PR 곡선 계산
+        # num_points = len(next(iter(precision_dic.values())))  # 모든 클래스가 동일 길이 가정
+        # mean_precision = []
+        # mean_recall = []
 
-        for i in range(num_points):
-            p_list = [precision_dic[cls][i] for cls in self.class_list]
-            r_list = [recall_dic[cls][i] for cls in self.class_list]
-            mean_precision.append(sum(p_list) / len(p_list))
-            mean_recall.append(sum(r_list) / len(r_list))
+        # for i in range(num_points):
+        #     p_list = [precision_dic[cls][i] for cls in self.class_list]
+        #     r_list = [recall_dic[cls][i] for cls in self.class_list]
+        #     mean_precision.append(sum(p_list) / len(p_list))
+        #     mean_recall.append(sum(r_list) / len(r_list))
 
         # 평균 PR 선 추가
-        plt.plot(mean_recall, mean_precision, label='mean', linestyle='--', color='black', linewidth=3)
+        # plt.plot(mean_recall, mean_precision, label='mean', linestyle='--', color='black', linewidth=3)
+
+
+        # 🔽 평균 PR 계산만 보간 기반으로 정확하게 수행
+        recall_range = np.linspace(0, 1, 101)
+        mean_precision = np.zeros_like(recall_range)
+
+        for cls in self.class_list:
+            p = np.array(precision_dic[cls])
+            r = np.array(recall_dic[cls])
+            # 중복 recall 제거
+            r, idx = np.unique(r, return_index=True)
+            p = p[idx]
+            interp_p = np.interp(recall_range, r, p, left=0, right=0)
+            mean_precision += interp_p
+
+        mean_precision /= len(self.class_list)
+        # 평균 PR 선 추가
+        plt.plot(recall_range, mean_precision, label='mean', linestyle='--', color='black', linewidth=3)
+
+        
 
         plt.xlabel('Recall')
         plt.ylabel('Precision')
@@ -581,12 +601,12 @@ class Eval_Object_Detector:
     
     def _get_precision(self, tp, fp):
         if tp + fp == 0:
-            return 0
+            return 1
         return tp / (tp + fp)
 
     def _get_recall(self, tp, fn):
         if tp + fn == 0:
-            return 0.0
+            return 0
         return tp / (tp + fn)
 
     def _get_background_fp(self, bg_fp, total_pred):
@@ -620,12 +640,13 @@ class Eval_Object_Detector:
         with open(path_annotation_file, 'r', encoding='utf-8') as f:
             full_txt = f.read()
             split_by_enter = full_txt.split('\n')
-            if split_by_enter[-1] == '':
-                del split_by_enter[-1]
         bbox_list = []
         for one_enter in split_by_enter:
             split_by_space = one_enter.split(' ')
-            class_no = int(split_by_space[0])
+            try:
+                class_no = int(split_by_space[0])
+            except:
+                continue
             class_name = self.class_list[class_no]
             b1, b2, b3, b4 = split_by_space[1:5]
             b1, b2, b3, b4 = float(b1), float(b2), float(b3), float(b4)
