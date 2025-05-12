@@ -13,7 +13,12 @@ from sklearn.metrics import confusion_matrix
 import seaborn as sns
 
 # custom
-from utils import *
+try:
+    print('utils import 1')
+    from utils import *
+except:
+    print('utils import 2')
+    from mAP_eval.utils import *
 
 class Eval_Object_Detector:
     '''
@@ -428,8 +433,8 @@ class Eval_Object_Detector:
                         if conf_thresh < self.first_conf_step:
                             self.bgfp_list.append(pred_bbox_data)
                             self.bgfp_list[-1]['label_name'] = key
-                            # confusion matrix 기록
-                            self.cm_gt[gt_class_name]['background_FP'].append(conf)
+                            # confusion matrix 기록 
+                            self.cm_gt[pred_class_name]['background_FP'].append(conf)
 
             # pred 순회 끝난 후 fn 계산
             for gt_bbox_data in gt_bbox_list:
@@ -575,8 +580,6 @@ class Eval_Object_Detector:
         mean_precision /= len(self.class_list)
         # 평균 PR 선 추가
         plt.plot(recall_range, mean_precision, label='mean', linestyle='--', color='black', linewidth=3)
-
-        
 
         plt.xlabel('Recall')
         plt.ylabel('Precision')
